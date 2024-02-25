@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
         // All bust, bets returned
         if (playerBust && dealerBust)
         {
-            mainText.text = "All Bust: Bets returned";
+            mainText.text = "All Bust.";
             playerScript.AdjustMoney(pot / 2);
         }
         // if player busts, dealer didnt, or if dealer has more points, dealer wins
@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
         //Check for tie, return bets
         else if (playerScript.handValue == dealerScript.handValue)
         {
-            mainText.text = "Push: Bets returned";
+            mainText.text = "Tied.";
             playerScript.AdjustMoney(pot / 2);
         }
         else

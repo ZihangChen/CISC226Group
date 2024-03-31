@@ -3,28 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
+    public int playerHealth;
+    public int dealerHealth;
+    public int startingItems;
+
     // Game Buttons
-    public Button dealBtn;
-    public Button hitBtn;
-    public Button standBtn;
-    public Button betBtn;
+    public UnityEngine.UI.Button dealBtn;
+    public UnityEngine.UI.Button hitBtn;
+    public UnityEngine.UI.Button standBtn;
+    public UnityEngine.UI.Button betBtn;
 
     // Cheats Implementation
     public Select selectScreen;
-    public Button magnifyingGlass;
-    public Button sunGlass;
-    public Button dagger;
-    public Button sword;
-    public Button rustySword;
-    public Button hook;
-    public Button cigar;
-    public Button glove;
+    public UnityEngine.UI.Button magnifyingGlass;
+    public UnityEngine.UI.Button sunGlass;
+    public UnityEngine.UI.Button dagger;
+    public UnityEngine.UI.Button sword;
+    public UnityEngine.UI.Button rustySword;
+    public UnityEngine.UI.Button hook;
+    public UnityEngine.UI.Button cigar;
+    public UnityEngine.UI.Button glove;
 
     // Initialize Cheat
     int magnifyingGlassN = 0;
@@ -63,6 +70,10 @@ public class GameManager : MonoBehaviour
     public Text mainText;
     public Text standBtnText;
 
+    // Game Ending Text
+    public Text gameEnd;
+    public UnityEngine.UI.Button returnMain;
+
     // Card hiding dealer's 2nd card
     public GameObject hideCard;
 
@@ -72,8 +83,28 @@ public class GameManager : MonoBehaviour
     // How much is bet
     int pot = 0;
 
+    // Health
+    public GameObject playerHealth1;
+    public GameObject playerHealth2;
+    public GameObject playerHealth3;
+    public GameObject playerHealth4;
+
+    public GameObject dealerHealth1;
+    public GameObject dealerHealth2;
+    public GameObject dealerHealth3;
+    public GameObject dealerHealth4;
+    public GameObject dealerHealth5;
+    public GameObject dealerHealth6;
+    public GameObject dealerHealth7;
+    public GameObject dealerHealth8;
+    public GameObject dealerHealth9;
+    public GameObject dealerHealth10;
+
     void Start()
     {
+        returnMain.gameObject.SetActive(false);
+        gameEnd.gameObject.SetActive(false);
+
         // Add on click listeners to the buttons
         dealBtn.onClick.AddListener(() => DealClicked());
         hitBtn.onClick.AddListener(() => HitClicked());
@@ -97,8 +128,108 @@ public class GameManager : MonoBehaviour
         EnableCheat();
         InitializeCheatText();
 
-        playerScript.money = 3;
-        dealerScript.money = 5;
+        playerScript.money = playerHealth;
+        dealerScript.money = dealerHealth;
+
+        dealerCashText.text = "Dealer Health: " + dealerScript.GetMoney().ToString();
+        cashText.text = "Your Health: " + playerScript.GetMoney().ToString();
+
+        mainText.text = "";
+        scoreText.text = "";
+        dealerScoreText.text = "";
+
+        playerHealth1.gameObject.SetActive(true);
+        playerHealth2.gameObject.SetActive(true);
+        playerHealth3.gameObject.SetActive(true);
+        playerHealth4.gameObject.SetActive(true);
+
+        dealerHealth1.gameObject.SetActive(true);
+        dealerHealth2.gameObject.SetActive(true);
+        dealerHealth3.gameObject.SetActive(true);
+        dealerHealth4.gameObject.SetActive(true);
+        dealerHealth5.gameObject.SetActive(true);
+
+        if (dealerHealth > 5)
+        {
+            dealerHealth6.gameObject.SetActive(true);
+            dealerHealth7.gameObject.SetActive(true);
+        }
+        else
+        {
+            dealerHealth6.gameObject.SetActive(false);
+            dealerHealth7.gameObject.SetActive(false);
+        }
+
+        if (dealerHealth > 8)
+        {
+            dealerHealth8.gameObject.SetActive(true);
+            dealerHealth9.gameObject.SetActive(true);
+            dealerHealth10.gameObject.SetActive(true);
+
+        }
+        else
+        {
+            dealerHealth8.gameObject.SetActive(false);
+            dealerHealth9.gameObject.SetActive(false);
+            dealerHealth10.gameObject.SetActive(false);
+        }
+
+        // Gain 3 items
+        if (startingItems == 1)
+        {
+            magnifyingGlassN++;
+            sunGlassN++;
+            daggerN++;
+            swordN++;
+            rustySwordN++;
+            hookN++;
+            cigarN++;
+            gloveN++;
+        }
+
+        if (startingItems == 3)
+        {
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+        }
+
+        if (startingItems == 5)
+        {
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+        }
+
+        if (startingItems == 8)
+        {
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();  
+        }
+
+        InitializeCheatText();
+
     }
 
     private void DealClicked()
@@ -109,15 +240,15 @@ public class GameManager : MonoBehaviour
         playerScript.ResetHand();
         dealerScript.ResetHand();
         // Hide deal hand score at start of deal
-        dealerScoreText.gameObject.SetActive(false);
+        // dealerScoreText.gameObject.SetActive(false);
         mainText.gameObject.SetActive(false);
-        dealerScoreText.gameObject.SetActive(false);
+        // dealerScoreText.gameObject.SetActive(false);
         GameObject.Find("Deck").GetComponent<DeckScript>().Shuffle();
         playerScript.StartHand();
         dealerScript.StartHand();
         // Update the scores displayed
-        scoreText.text = "Hand: " + playerScript.handValue.ToString();
-        dealerScoreText.text = "Hand: " + dealerScript.handValue.ToString();
+        // scoreText.text = "Hand: " + playerScript.handValue.ToString();
+        // dealerScoreText.text = "Hand: " + dealerScript.handValue.ToString();
         // Place card back on dealer card, hide card
         hideCard.GetComponent<Renderer>().enabled = true;
         // Adjust buttons visibility
@@ -134,6 +265,7 @@ public class GameManager : MonoBehaviour
         dealerCashText.text = "Dealer Health: " + dealerScript.GetMoney().ToString();
         cashText.text = "Your Health: " + playerScript.GetMoney().ToString();
 
+        CheckBust();
     }
 
     private void HitClicked()
@@ -165,8 +297,12 @@ public class GameManager : MonoBehaviour
         while (dealerScript.handValue < 17 && dealerScript.cardIndex < 10)
         {
             dealerScript.GetCard();
-            dealerScoreText.text = "Hand: " + dealerScript.handValue.ToString();
-            if (dealerScript.handValue > 20) RoundOver();
+            // dealerScoreText.text = "Hand: " + dealerScript.handValue.ToString();
+            if (dealerScript.handValue > 20)
+            {
+                RoundOver();
+                return;
+            }
         }
         RoundOver();
     }
@@ -180,7 +316,7 @@ public class GameManager : MonoBehaviour
         bool player21 = playerScript.handValue == 21;
         bool dealer21 = dealerScript.handValue == 21;
 
-        dealerScoreText.text = "Hand: " + dealerScript.handValue.ToString();
+        // dealerScoreText.text = "Hand: " + dealerScript.handValue.ToString();
         // If stand has been clicked less than twice, no 21s or busts, quit function
         if (standClicks < 2 && !playerBust && !dealerBust && !player21 && !dealer21) return;
         bool roundOver = true;
@@ -188,7 +324,6 @@ public class GameManager : MonoBehaviour
         if (playerBust && dealerBust)
         {
             mainText.text = "All Bust.";
-            playerScript.AdjustMoney(pot / 2);
         }
         // if player busts, dealer didnt, or if dealer has more points, dealer wins
         else if (playerBust || (!dealerBust && dealerScript.handValue > playerScript.handValue))
@@ -218,7 +353,7 @@ public class GameManager : MonoBehaviour
             standBtn.gameObject.SetActive(false);
             dealBtn.gameObject.SetActive(true);
             mainText.gameObject.SetActive(true);
-            dealerScoreText.gameObject.SetActive(true);
+            // dealerScoreText.gameObject.SetActive(true);
             hideCard.GetComponent<Renderer>().enabled = false;
             dealerCashText.text = "Dealer Health: " + dealerScript.GetMoney().ToString();
             cashText.text = "Your Health: " + playerScript.GetMoney().ToString();
@@ -228,35 +363,106 @@ public class GameManager : MonoBehaviour
         topDeck.SetActive(false);
 
         AddItem();
+        CheckHealth();
         CheckGameOver();
     }
 
+    void CheckHealth()
+    {
+        if (playerScript.GetMoney() < 4)
+        {
+            playerHealth4.gameObject.SetActive(false);
+        }
+        if (playerScript.GetMoney() < 3)
+        {
+            playerHealth3.gameObject.SetActive(false);
+        }
+        if (playerScript.GetMoney() < 2)
+        {
+            playerHealth2.gameObject.SetActive(false);
+        }
+        if (playerScript.GetMoney() < 1)
+        {
+            playerHealth1.gameObject.SetActive(false);
+        }
+
+        if (dealerScript.GetMoney() < 10)
+        {
+            dealerHealth10.gameObject.SetActive(false);
+        }
+        if (dealerScript.GetMoney() < 9)
+        {
+            dealerHealth9.gameObject.SetActive(false);
+        }
+        if (dealerScript.GetMoney() < 8)
+        {
+            dealerHealth8.gameObject.SetActive(false);
+        }
+        if (dealerScript.GetMoney() < 7)
+        {
+            dealerHealth7.gameObject.SetActive(false);
+        }
+        if (dealerScript.GetMoney() < 6)
+        {
+            dealerHealth6.gameObject.SetActive(false);
+        }
+        if (dealerScript.GetMoney() < 5)
+        {
+            dealerHealth5.gameObject.SetActive(false);
+        }
+        if (dealerScript.GetMoney() < 4)
+        {
+            dealerHealth4.gameObject.SetActive(false);
+        }
+        if (dealerScript.GetMoney() < 3)
+        {
+            dealerHealth3.gameObject.SetActive(false);
+        }
+        if (dealerScript.GetMoney() < 2)
+        {
+            dealerHealth2.gameObject.SetActive(false);
+        }
+        if (dealerScript.GetMoney() < 1)
+        {
+            dealerHealth1.gameObject.SetActive(false);
+        }
+    }
+
+    private int round = 0;
     void AddItem()
     {
-        System.Random random = new System.Random();
-        int rint = random.Next(0, 8);
+        round++;
 
-        if (rint == 0) magnifyingGlassN++;
-        else if (rint == 1) sunGlassN++;
-        else if (rint == 2) daggerN++;
-        else if (rint == 3) swordN++;
-        else if (rint == 4) rustySwordN++;
-        else if (rint == 5) hookN++;
-        else if (rint == 6) cigarN++;
-        else if (rint == 7) gloveN++;
+        if (round == 2)
+        {
+            System.Random random = new System.Random();
+            int rint = random.Next(0, 20);
 
-        InitializeCheatText();
+            if (rint >= 0 && rint <= 3) magnifyingGlassN++;
+            else if (rint >= 4 && rint <= 5) sunGlassN++;
+            else if (rint >= 6 && rint <= 8) daggerN++;
+            else if (rint >= 9 && rint <= 11) swordN++;
+            else if (rint >= 11 && rint <= 12) rustySwordN++;
+            else if (rint >= 13 && rint <= 13) hookN++;
+            else if (rint >= 14 && rint <= 16) cigarN++;
+            else if (rint >= 17 && rint <= 19) gloveN++;
+
+            InitializeCheatText();
+            round = 0;
+        }
     }
 
     void CheckGameOver()
     {
         if (playerScript.money == 0)
         {
+            gameEnd.text = "Game Over!.";
             GameOver();
         }
         else if (dealerScript.money == 0)
         {
-            Won();
+            gameEnd.text = "Won Stage!";
+            GameOver();
         }
     }
 
@@ -264,14 +470,26 @@ public class GameManager : MonoBehaviour
     {
         DisableCheat();
         DisableButton();
-        mainText.text = "Won Stage!";
+        gameEnd.text = "Won Stage!";
+
+        mainText.text = "";
     }
 
     void GameOver()
     {
+        dealBtn.gameObject.SetActive(false);
         DisableCheat();
         DisableButton();
-        mainText.text = "Game Over!.";
+        gameEnd.gameObject.SetActive(true);
+        returnMain.gameObject.SetActive(true);
+        returnMain.onClick.AddListener(() => ReturnClicked());
+        mainText.text = "";
+    }
+
+    void ReturnClicked()
+    {
+        SceneManager.LoadScene("Map");
+        returnMain.gameObject.SetActive(false);
     }
 
     // Add money to pot if bet clicked
@@ -318,7 +536,7 @@ public class GameManager : MonoBehaviour
             if (playerScript.cardIndex <= 10)
             {
                 playerScript.GetHalfCard();
-                scoreText.text = "Hand: " + playerScript.handValue.ToString();
+                // scoreText.text = "Hand: " + playerScript.handValue.ToString();
                 if (playerScript.handValue > 20)
                 {
                     standBtnText.text = "Black Jack!";
@@ -344,6 +562,7 @@ public class GameManager : MonoBehaviour
             selectScreen.gameObject.SetActive(true);
             selectScreen.ChooseDestoryCard(playerScript.hand[0], playerScript.hand[1]);
             swordN--;
+            CheckBust();
         }
         InitializeCheatText();
     }
@@ -358,6 +577,7 @@ public class GameManager : MonoBehaviour
             selectScreen.gameObject.SetActive(true);
             selectScreen.ChooseDestoryOppoCard(dealerScript.hand[0], dealerScript.hand[1]);
             rustySwordN--;
+            CheckDealerBust();
         }
         InitializeCheatText();
     }
@@ -397,6 +617,8 @@ public class GameManager : MonoBehaviour
             selectScreen.gameObject.SetActive(true);
             selectScreen.ChooseGlove(playerScript.hand[0], playerScript.hand[1]);
             gloveN--;
+            CheckBust();
+            CheckDealerBust();
         }
         InitializeCheatText();
     }
@@ -492,7 +714,7 @@ public class GameManager : MonoBehaviour
 
     public void CheckBust()
     {
-        scoreText.text = "Hand: " + playerScript.handValue.ToString();
+        // scoreText.text = "Hand: " + playerScript.handValue.ToString();
         if (playerScript.handValue > 20)
         {
             standBtnText.text = "Black Jack!";
@@ -504,7 +726,7 @@ public class GameManager : MonoBehaviour
 
     public void CheckDealerBust()
     {
-        dealerScoreText.text = "Hand: " + dealerScript.handValue.ToString();
+        // dealerScoreText.text = "Hand: " + dealerScript.handValue.ToString();
         if (dealerScript.handValue > 20)
         {
             standBtnText.text = "Black Jack!";

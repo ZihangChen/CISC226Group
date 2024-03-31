@@ -576,9 +576,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: -1895117371
+  m_SortingLayer: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 2c7926e485e8cc54da5b9c4415e83515, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1380,7 +1380,7 @@ GameObject:
   - component: {fileID: 459330445}
   - component: {fileID: 459330444}
   m_Layer: 5
-  m_Name: Bets
+  m_Name: DealerMoney
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1503,7 +1503,7 @@ MonoBehaviour:
   dealerScript: {fileID: 823620953}
   scoreText: {fileID: 547314220}
   dealerScoreText: {fileID: 1759320155}
-  betsText: {fileID: 459330444}
+  dealerCashText: {fileID: 459330444}
   cashText: {fileID: 1827706612}
   mainText: {fileID: 1588740646}
   standBtnText: {fileID: 128850215}
@@ -3179,6 +3179,7 @@ MonoBehaviour:
   cardScript: {fileID: 668036675}
   deckScript: {fileID: 881082776}
   handValue: 0
+  money: 10
   hand:
   - {fileID: 668036674}
   - {fileID: 1274859494}
@@ -4792,6 +4793,7 @@ MonoBehaviour:
   cardScript: {fileID: 891675940}
   deckScript: {fileID: 881082776}
   handValue: 0
+  money: 10
   hand:
   - {fileID: 891675939}
   - {fileID: 430587579}

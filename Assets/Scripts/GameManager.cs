@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
     // public Text to access and update - hud
     public Text scoreText;
     public Text dealerScoreText;
-    public Text betsText;
+    public Text dealerCashText;
     public Text cashText;
     public Text mainText;
     public Text standBtnText;
@@ -89,9 +90,15 @@ public class GameManager : MonoBehaviour
         cigar.onClick.AddListener(() => Cigar());
         glove.onClick.AddListener(() => Glove());
 
+        hitBtn.gameObject.SetActive(false);
+        standBtn.gameObject.SetActive(false);
+
         DisableCheat();
         EnableCheat();
         InitializeCheatText();
+
+        playerScript.money = 3;
+        dealerScript.money = 5;
     }
 
     private void DealClicked()
@@ -124,10 +131,8 @@ public class GameManager : MonoBehaviour
         EnableCheat();
 
         // Set standard pot size
-        pot = 2;
-        betsText.text = "Bets: $" + (pot/2).ToString();
-        playerScript.AdjustMoney(-1);
-        cashText.text = "$" + playerScript.GetMoney().ToString();
+        dealerCashText.text = "Dealer Health: " + dealerScript.GetMoney().ToString();
+        cashText.text = "Your Health: " + playerScript.GetMoney().ToString();
 
     }
 
@@ -189,18 +194,18 @@ public class GameManager : MonoBehaviour
         else if (playerBust || (!dealerBust && dealerScript.handValue > playerScript.handValue))
         {
             mainText.text = "Dealer wins!";
+            playerScript.AdjustMoney(-1);
         }
         // if dealer busts, player didnt, or player has more points, player wins
         else if (dealerBust || playerScript.handValue > dealerScript.handValue)
         {
             mainText.text = "You win!";
-            playerScript.AdjustMoney(pot);
+            dealerScript.AdjustMoney(-1);
         }
         //Check for tie, return bets
         else if (playerScript.handValue == dealerScript.handValue)
         {
             mainText.text = "Tied.";
-            playerScript.AdjustMoney(pot / 2);
         }
         else
         {
@@ -215,11 +220,58 @@ public class GameManager : MonoBehaviour
             mainText.gameObject.SetActive(true);
             dealerScoreText.gameObject.SetActive(true);
             hideCard.GetComponent<Renderer>().enabled = false;
-            cashText.text = "$" + playerScript.GetMoney().ToString();
+            dealerCashText.text = "Dealer Health: " + dealerScript.GetMoney().ToString();
+            cashText.text = "Your Health: " + playerScript.GetMoney().ToString();
             standClicks = 0;
         }
 
         topDeck.SetActive(false);
+
+        AddItem();
+        CheckGameOver();
+    }
+
+    void AddItem()
+    {
+        System.Random random = new System.Random();
+        int rint = random.Next(0, 8);
+
+        if (rint == 0) magnifyingGlassN++;
+        else if (rint == 1) sunGlassN++;
+        else if (rint == 2) daggerN++;
+        else if (rint == 3) swordN++;
+        else if (rint == 4) rustySwordN++;
+        else if (rint == 5) hookN++;
+        else if (rint == 6) cigarN++;
+        else if (rint == 7) gloveN++;
+
+        InitializeCheatText();
+    }
+
+    void CheckGameOver()
+    {
+        if (playerScript.money == 0)
+        {
+            GameOver();
+        }
+        else if (dealerScript.money == 0)
+        {
+            Won();
+        }
+    }
+
+    void Won()
+    {
+        DisableCheat();
+        DisableButton();
+        mainText.text = "Won Stage!";
+    }
+
+    void GameOver()
+    {
+        DisableCheat();
+        DisableButton();
+        mainText.text = "Game Over!.";
     }
 
     // Add money to pot if bet clicked
@@ -230,7 +282,6 @@ public class GameManager : MonoBehaviour
         playerScript.AdjustMoney(-intBet);
         cashText.text = "$" + playerScript.GetMoney().ToString();
         pot += (intBet * 2);
-        betsText.text = "Bets: $" + (pot/2).ToString();
     }
 
     // Added Cheats

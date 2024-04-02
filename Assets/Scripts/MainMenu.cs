@@ -5,12 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-
-    public void Menu()
-    {
-        SceneManager.LoadScene("Menu");
-    }
-
     public void PlayGame()
     {
         SceneManager.LoadScene("Intro");
@@ -33,17 +27,7 @@ public class MainMenu : MonoBehaviour
 
     public void LevelOne()
     {
-        SceneManager.LoadScene("GameFish");
-    }
-
-    public void LevelTwo()
-    {
-        SceneManager.LoadScene("GameShark");
-    }
-
-    public void LevelThree()
-    {
-        SceneManager.LoadScene("GameKraken");
+        SceneManager.LoadScene("Game");
     }
 
     public void QuitGame()

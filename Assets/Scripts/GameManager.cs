@@ -12,6 +12,7 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
+    public int stage;
     public int playerHealth;
     public int dealerHealth;
     public int startingItems;
@@ -102,6 +103,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        RemoveItemDescription();
+
         returnMain.gameObject.SetActive(false);
         gameEnd.gameObject.SetActive(false);
 
@@ -495,6 +498,10 @@ public class GameManager : MonoBehaviour
 
     void ReturnClicked()
     {
+        Debug.Log("CurrentStage " + GameStage.stage);
+        Debug.Log("CurrentMode " + GameStage.mode);
+        if (GameStage.mode == 0 && gameEnd.text == "Won Stage!") GameStage.stage = stage + 1;
+        Debug.Log("UptStage " + GameStage.stage);
         SceneManager.LoadScene("Map");
         returnMain.gameObject.SetActive(false);
     }
@@ -512,7 +519,7 @@ public class GameManager : MonoBehaviour
     // Added Cheats
     void MagnifyingGlass()
     {
-        if (addCheat) ;
+        if (addCheat) return;
         else
         {
             int cardValue = deckScript.TopDeck(topDeck.GetComponent<CardScript>());
@@ -525,7 +532,7 @@ public class GameManager : MonoBehaviour
 
     void SunGlass()
     {
-        if (addCheat) ;
+        if (addCheat) return;
         else
         {
             hideCard.GetComponent<Renderer>().enabled = false;
@@ -536,7 +543,7 @@ public class GameManager : MonoBehaviour
 
     void Dagger()
     {
-        if (addCheat) ;
+        if (addCheat) return;
         else
         {
             // Check that there is still room on the table
@@ -560,7 +567,7 @@ public class GameManager : MonoBehaviour
 
     void Sword()
     {
-        if (addCheat) ;
+        if (addCheat) return;
         else
         {
             DisableCheat();
@@ -574,7 +581,7 @@ public class GameManager : MonoBehaviour
 
     void RustySword()
     {
-        if (addCheat) ;
+        if (addCheat) return;
         else
         {
             DisableCheat();
@@ -589,7 +596,7 @@ public class GameManager : MonoBehaviour
 
     void Hook()
     {
-        if (addCheat) ;
+        if (addCheat) return;
         else
         {
             deckScript.currentIndex++;
@@ -601,7 +608,7 @@ public class GameManager : MonoBehaviour
 
     void Cigar()
     {
-        if (addCheat) ;
+        if (addCheat) return;
         else
         {
             playerScript.ResetHand();
@@ -615,7 +622,7 @@ public class GameManager : MonoBehaviour
 
     void Glove()
     {
-        if (addCheat) ;
+        if (addCheat) return;
         else
         {
             DisableCheat();
@@ -736,5 +743,66 @@ public class GameManager : MonoBehaviour
             DisableCheat();
         }
         RoundOver();
+    }
+
+    public GameObject itemDescription;
+    public SpriteRenderer item1;
+    public SpriteRenderer item2;
+    public SpriteRenderer item3;
+    public SpriteRenderer item4;
+    public SpriteRenderer item5;
+    public SpriteRenderer item6;
+    public SpriteRenderer item7;
+    public SpriteRenderer item8;
+
+    public void DisplayItemDescription(string itemName)
+    {
+        itemDescription.SetActive(true);
+
+        if (itemName == "MagGlass")
+        {
+            item1.enabled = true;
+        }
+        if (itemName == "SunGlass")
+        {
+            item2.enabled = true;
+        }
+        if (itemName == "Glove")
+        {
+            item3.enabled = true;
+        }
+        if (itemName == "Cigar")
+        {
+            item4.enabled = true;
+        }
+        if (itemName == "Hook")
+        {
+            item5.enabled = true;
+        }
+        if (itemName == "Sword")
+        {
+            item6.enabled = true;
+        }
+        if (itemName == "RustySword")
+        {
+            item7.enabled = true;
+        }
+        if (itemName == "Dagger")
+        {
+            item8.enabled = true;
+        }
+
+    }
+
+    public void RemoveItemDescription()
+    {
+        item1.enabled = false;
+        item2.enabled = false;
+        item3.enabled = false;
+        item4.enabled = false;
+        item5.enabled = false;
+        item6.enabled = false;
+        item7.enabled = false;
+        item8.enabled = false;
     }
 }

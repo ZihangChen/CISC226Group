@@ -611,6 +611,7 @@ public class GameManager : MonoBehaviour
         if (addCheat) return;
         else
         {
+            playerScript.ResetAllHandAngle();
             playerScript.ResetHand();
             playerScript.StartHand();
             topDeck.SetActive(false);

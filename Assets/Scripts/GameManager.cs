@@ -209,6 +209,9 @@ public class GameManager : MonoBehaviour
             AddItem();
             AddItem();
             AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
         }
 
         if (startingItems == 8)
@@ -225,7 +228,11 @@ public class GameManager : MonoBehaviour
             AddItem();
             AddItem();
             AddItem();
-            AddItem();  
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
+            AddItem();
         }
 
         InitializeCheatText();
@@ -318,7 +325,7 @@ public class GameManager : MonoBehaviour
 
         // dealerScoreText.text = "Hand: " + dealerScript.handValue.ToString();
         // If stand has been clicked less than twice, no 21s or busts, quit function
-        if (standClicks < 2 && !playerBust && !dealerBust && !player21 && !dealer21) return;
+        if (standClicks < 2 && !playerBust && !dealerBust && !player21) return;
         bool roundOver = true;
         // All bust, bets returned
         if (playerBust && dealerBust)
@@ -438,13 +445,13 @@ public class GameManager : MonoBehaviour
             System.Random random = new System.Random();
             int rint = random.Next(0, 20);
 
-            if (rint >= 0 && rint <= 3) magnifyingGlassN++;
-            else if (rint >= 4 && rint <= 5) sunGlassN++;
-            else if (rint >= 6 && rint <= 8) daggerN++;
-            else if (rint >= 9 && rint <= 11) swordN++;
-            else if (rint >= 11 && rint <= 12) rustySwordN++;
-            else if (rint >= 13 && rint <= 13) hookN++;
-            else if (rint >= 14 && rint <= 16) cigarN++;
+            if (rint >= 0 && rint <= 7) magnifyingGlassN++;
+            else if (rint >= 8 && rint <= 8) sunGlassN++;
+            else if (rint >= 9 && rint <= 10) daggerN++;
+            else if (rint >= 11 && rint <= 12) swordN++;
+            else if (rint >= 13 && rint <= 13) rustySwordN++;
+            else if (rint >= 14 && rint <= 14) hookN++;
+            else if (rint >= 15 && rint <= 16) cigarN++;
             else if (rint >= 17 && rint <= 19) gloveN++;
 
             InitializeCheatText();
@@ -505,7 +512,7 @@ public class GameManager : MonoBehaviour
     // Added Cheats
     void MagnifyingGlass()
     {
-        if (addCheat) magnifyingGlassN++;
+        if (addCheat) ;
         else
         {
             int cardValue = deckScript.TopDeck(topDeck.GetComponent<CardScript>());
@@ -518,7 +525,7 @@ public class GameManager : MonoBehaviour
 
     void SunGlass()
     {
-        if (addCheat) sunGlassN++;
+        if (addCheat) ;
         else
         {
             hideCard.GetComponent<Renderer>().enabled = false;
@@ -529,7 +536,7 @@ public class GameManager : MonoBehaviour
 
     void Dagger()
     {
-        if (addCheat) daggerN++;
+        if (addCheat) ;
         else
         {
             // Check that there is still room on the table
@@ -544,17 +551,16 @@ public class GameManager : MonoBehaviour
                     DisableCheat();
                     RoundOver();
                 }
+                topDeck.SetActive(false);
+                daggerN--;
             }
-
-            topDeck.SetActive(false);
-            daggerN--;
         }
         InitializeCheatText();
     }
 
     void Sword()
     {
-        if (addCheat) swordN++;
+        if (addCheat) ;
         else
         {
             DisableCheat();
@@ -562,29 +568,28 @@ public class GameManager : MonoBehaviour
             selectScreen.gameObject.SetActive(true);
             selectScreen.ChooseDestoryCard(playerScript.hand[0], playerScript.hand[1]);
             swordN--;
-            CheckBust();
         }
         InitializeCheatText();
     }
 
     void RustySword()
     {
-        if (addCheat) rustySwordN++;
+        if (addCheat) ;
         else
         {
             DisableCheat();
             DisableButton();
             selectScreen.gameObject.SetActive(true);
             selectScreen.ChooseDestoryOppoCard(dealerScript.hand[0], dealerScript.hand[1]);
+            topDeck.SetActive(false);
             rustySwordN--;
-            CheckDealerBust();
         }
         InitializeCheatText();
     }
 
     void Hook()
     {
-        if (addCheat) hookN++;
+        if (addCheat) ;
         else
         {
             deckScript.currentIndex++;
@@ -596,11 +601,12 @@ public class GameManager : MonoBehaviour
 
     void Cigar()
     {
-        if (addCheat) cigarN++;
+        if (addCheat) ;
         else
         {
             playerScript.ResetHand();
             playerScript.StartHand();
+            topDeck.SetActive(false);
             CheckBust();
             cigarN--;
         }
@@ -609,7 +615,7 @@ public class GameManager : MonoBehaviour
 
     void Glove()
     {
-        if (addCheat) gloveN++;
+        if (addCheat) ;
         else
         {
             DisableCheat();
@@ -617,8 +623,6 @@ public class GameManager : MonoBehaviour
             selectScreen.gameObject.SetActive(true);
             selectScreen.ChooseGlove(playerScript.hand[0], playerScript.hand[1]);
             gloveN--;
-            CheckBust();
-            CheckDealerBust();
         }
         InitializeCheatText();
     }
@@ -720,8 +724,8 @@ public class GameManager : MonoBehaviour
             standBtnText.text = "Black Jack!";
             if (playerScript.handValue > 21) standBtnText.text = "Busted!";
             DisableCheat();
-            RoundOver();
         }
+        RoundOver();
     }
 
     public void CheckDealerBust()
@@ -729,10 +733,8 @@ public class GameManager : MonoBehaviour
         // dealerScoreText.text = "Hand: " + dealerScript.handValue.ToString();
         if (dealerScript.handValue > 20)
         {
-            standBtnText.text = "Black Jack!";
-            if (dealerScript.handValue > 21) standBtnText.text = "Busted!";
             DisableCheat();
-            RoundOver();
         }
+        RoundOver();
     }
 }

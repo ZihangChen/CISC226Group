@@ -527,6 +527,7 @@ public class GameManager : MonoBehaviour
             topDeck.SetActive(true);
             magnifyingGlassN--;
         }
+        CheckHaveItem();
         InitializeCheatText();
     }
 
@@ -538,6 +539,7 @@ public class GameManager : MonoBehaviour
             hideCard.GetComponent<Renderer>().enabled = false;
             sunGlassN--;
         }
+        CheckHaveItem();
         InitializeCheatText();
     }
 
@@ -562,6 +564,7 @@ public class GameManager : MonoBehaviour
                 daggerN--;
             }
         }
+        CheckHaveItem();
         InitializeCheatText();
     }
 
@@ -576,6 +579,7 @@ public class GameManager : MonoBehaviour
             selectScreen.ChooseDestoryCard(playerScript.hand[0], playerScript.hand[1]);
             swordN--;
         }
+        CheckHaveItem();
         InitializeCheatText();
     }
 
@@ -591,6 +595,7 @@ public class GameManager : MonoBehaviour
             topDeck.SetActive(false);
             rustySwordN--;
         }
+        CheckHaveItem();
         InitializeCheatText();
     }
 
@@ -603,6 +608,7 @@ public class GameManager : MonoBehaviour
             topDeck.SetActive(false);
             hookN--;
         }
+        CheckHaveItem();
         InitializeCheatText();
     }
 
@@ -618,6 +624,7 @@ public class GameManager : MonoBehaviour
             CheckBust();
             cigarN--;
         }
+        CheckHaveItem();
         InitializeCheatText();
     }
 
@@ -632,6 +639,7 @@ public class GameManager : MonoBehaviour
             selectScreen.ChooseGlove(playerScript.hand[0], playerScript.hand[1]);
             gloveN--;
         }
+        CheckHaveItem();
         InitializeCheatText();
     }
 
@@ -755,6 +763,42 @@ public class GameManager : MonoBehaviour
     public SpriteRenderer item6;
     public SpriteRenderer item7;
     public SpriteRenderer item8;
+
+    void CheckHaveItem()
+    {
+        if (magnifyingGlassN == 0)
+        {
+            item1.enabled = false;
+        }
+        if (sunGlassN == 0)
+        {
+            item2.enabled = false;
+        }
+        if (gloveN == 0)
+        {
+            item3.enabled = false;
+        }
+        if (cigarN == 0)
+        {
+            item4.enabled = false;
+        }
+        if (hookN == 0)
+        {
+            item5.enabled = false;
+        }
+        if (swordN == 0)
+        {
+            item6.enabled = false;
+        }
+        if (rustySwordN == 0)
+        {
+            item7.enabled = false;
+        }
+        if (daggerN == 0)
+        {
+            item8.enabled = false;
+        }
+    }
 
     public void DisplayItemDescription(string itemName)
     {

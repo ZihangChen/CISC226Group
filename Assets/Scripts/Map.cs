@@ -15,8 +15,6 @@ public class Map : MonoBehaviour
     public Button unlockStage;
     public Text unlockText;
 
-    bool allstage = false;
-
     public SpriteRenderer flag1;
     public SpriteRenderer flag2;
     public SpriteRenderer flag3;
@@ -30,7 +28,6 @@ public class Map : MonoBehaviour
     {
         Debug.Log("MapInit " + GameStage.stage);
         stage = GameStage.stage;
-        allstage = false;
 
         unlockStage.onClick.AddListener(() => UnlockStage());
         CheckStage();

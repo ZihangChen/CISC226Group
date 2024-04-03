@@ -39,8 +39,8 @@ public class Map : MonoBehaviour
 
     void UnlockStage()
     {
-        if (allstage == false) allstage = true; 
-        else allstage = false;
+        if (GameStage.mode == 1) GameStage.mode = 0; 
+        else GameStage.mode = 1;
         CheckStage();
     }
 
@@ -61,19 +61,17 @@ public class Map : MonoBehaviour
         cross1.enabled = false;
         cross2.enabled = false;
 
-        if (allstage)
+        if (GameStage.mode == 1)
         {
-            GameStage.mode = 1;
-            unlockText.color = Color.red;
-            unlockText.text = "Conquest";
+            unlockText.color = Color.green;
+            unlockText.text = "Free Roam";
             stage1.gameObject.SetActive(true);
             stage2.gameObject.SetActive(true);
             stage3.gameObject.SetActive(true);
         }
         else {
-            GameStage.mode = 0;
-            unlockText.color = Color.green;
-            unlockText.text = "Free Roam";
+            unlockText.color = Color.red;
+            unlockText.text = "Conquest";
             if (stage == 1)
             {
                 stage1.gameObject.SetActive(true);

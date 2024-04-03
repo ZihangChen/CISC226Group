@@ -32,6 +32,21 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Map");
     }
 
+    public void IntroOne()
+    {
+        SceneManager.LoadScene("IntroFish");
+    }
+
+    public void IntroTwo()
+    {
+        SceneManager.LoadScene("IntroShark");
+    }
+
+    public void IntroThree()
+    {
+        SceneManager.LoadScene("IntroKraken");
+    }
+
     public void LevelOne()
     {
         SceneManager.LoadScene("GameFish");
